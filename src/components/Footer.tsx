@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Github, Twitter, Send, Instagram } from "lucide-react";
-import mascotAsset from "@/assets/rabola-mascot.png.asset.json";
+import Logo from "@/components/Logo";
 
 export default function Footer() {
   return (
@@ -8,11 +8,8 @@ export default function Footer() {
       <div className="container py-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2">
-            <div className="flex items-center gap-2.5 font-bold text-lg">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl overflow-hidden ring-1 ring-primary/15 bg-gradient-to-br from-primary/10 to-[hsl(var(--primary-glow))]/10">
-                <img src={mascotAsset.url} alt="RABOLA" className="h-10 w-10 object-contain" />
-              </span>
-              <span className="text-primary">RABOLA</span>
+            <div className="group">
+              <Logo size={40} />
             </div>
             <p className="mt-3 text-sm text-muted-foreground max-w-sm">
               Dasturchilar uchun aqlli platforma — o'z loyihalaringizni namoyish qiling, ilhomlaning va rivojlaning.

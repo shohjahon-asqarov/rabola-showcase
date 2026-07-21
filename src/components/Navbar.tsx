@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Sun, Moon, Plus, User, Home, LayoutGrid, Trophy, Users, GraduationCap, BarChart3, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import NotificationBell from "@/components/NotificationBell";
-import mascotAsset from "@/assets/rabola-mascot.png.asset.json";
+import Logo from "@/components/Logo";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -35,11 +35,8 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-[0_1px_0_hsl(var(--border)/0.4),0_8px_24px_-16px_hsl(var(--foreground)/0.1)]">
       <div className="container flex h-16 items-center gap-3">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 font-bold text-[17px] tracking-tight shrink-0 group">
-          <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-2xl overflow-hidden ring-1 ring-primary/15 bg-gradient-to-br from-primary/10 to-[hsl(var(--primary-glow))]/10 transition-transform group-hover:scale-[1.06]">
-            <img src={mascotAsset.url} alt="RABOLA" className="h-10 w-10 object-contain drop-shadow-sm" />
-          </span>
-          <span className="font-extrabold tracking-[-0.02em] text-primary">RABOLA</span>
+        <Link to="/" className="shrink-0 group">
+          <Logo size={40} />
         </Link>
 
         {/* Center nav */}
