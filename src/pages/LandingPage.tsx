@@ -165,17 +165,11 @@ export default function LandingPage() {
                 {/* Simulated Web Application Display */}
                 <div className="p-5 sm:p-6 space-y-6">
                   <div className="relative rounded-xl overflow-hidden group shadow-md aspect-[16/10] bg-muted flex items-center justify-center border border-border">
-                    {heroAsset.url ? (
-                      <img
-                        src={heroAsset.url}
-                        alt="RABOLA Hero Illustration"
-                        className="w-full h-full object-cover transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-cyan-500/10 flex items-center justify-center">
-                        <Code2 className="h-12 w-12 text-primary/30 animate-pulse" />
-                      </div>
-                    )}
+                    <img
+                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80"
+                      alt="RABOLA Hero Illustration"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
+                    />
 
                     {/* Embedded mascot badge */}
                     <div className="absolute bottom-4 right-4 h-16 w-16 sm:h-20 sm:w-20 rounded-xl bg-card border border-border/80 p-1.5 shadow-lg flex items-center justify-center animate-bounce" style={{ animationDuration: '5s' }}>
@@ -253,20 +247,32 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
 
             {/* Card 1: 2-Cols Large featured card on desktop */}
-            <div className="md:col-span-2 rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <Laptop className="h-6 w-6 text-primary" />
+            <div className="md:col-span-2 rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row justify-between">
+              <div className="p-6 sm:p-8 space-y-6 flex-1 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <Laptop className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="text-2xl font-extrabold text-foreground">Professional Portfolio va Galereya</h4>
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                      Yaratgan web-saytlaringizni yuqori aniqlikdagi skrinshotlar, havolalar, to'liq tavsif va ishlatilgan texnologiyalar bilan birga chiroyli va qulay tartibda taqdim eting. Mijozlar va ish beruvchilar uchun tayyor portfolio!
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <h4 className="text-2xl font-extrabold text-foreground">Professional Portfolio va Galereya</h4>
-                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-                    Yaratgan web-saytlaringizni yuqori aniqlikdagi skrinshotlar, havolalar, to'liq tavsif va ishlatilgan texnologiyalar bilan birga chiroyli va qulay tartibda taqdim eting. Mijozlar va ish beruvchilar uchun tayyor portfolio!
-                  </p>
+                <div className="pt-2 flex items-center gap-1.5 text-primary font-bold text-sm">
+                  Loyihalarni ko'rib chiqish <ChevronRight className="h-4 w-4" />
                 </div>
               </div>
-              <div className="pt-2 flex items-center gap-1.5 text-primary font-bold text-sm">
-                Loyihalarni ko'rib chiqish <ChevronRight className="h-4 w-4" />
+
+              {/* Added high fidelity mock design layout visual representation */}
+              <div className="relative w-full md:w-72 bg-muted/30 border-t md:border-t-0 md:border-l border-border/75 min-h-[220px] overflow-hidden flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-cyan-500/5" />
+                <img
+                  src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=500&q=80"
+                  alt="Portfolio Grid Illustration"
+                  className="w-5/6 h-5/6 object-cover rounded-xl shadow-lg border border-border"
+                />
               </div>
             </div>
 
@@ -301,20 +307,32 @@ export default function LandingPage() {
             </div>
 
             {/* Card 4: 2-Cols Mentorship description */}
-            <div className="md:col-span-2 rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="h-12 w-12 rounded-xl bg-cyan-500/10 flex items-center justify-center shrink-0">
-                  <Users2 className="h-6 w-6 text-cyan-500" />
+            <div className="md:col-span-2 rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row justify-between">
+              <div className="p-6 sm:p-8 space-y-6 flex-1 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="h-12 w-12 rounded-xl bg-cyan-500/10 flex items-center justify-center shrink-0">
+                    <Users2 className="h-6 w-6 text-cyan-500" />
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="text-2xl font-extrabold text-foreground">Ustozlar va Guruhlar bilan o'sish</h4>
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                      IT markazlar va ustozlar maxsus o'quv guruhlari yaratishi mumkin. O'quvchilar ushbu guruhlarga a'zo bo'lib, o'zaro raqobat muhitida birgalikda o'rganadilar va loyihalarini mentorlar nazoratida topshiradilar.
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <h4 className="text-2xl font-extrabold text-foreground">Ustozlar va Guruhlar bilan o'sish</h4>
-                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-                    IT markazlar va ustozlar maxsus o'quv guruhlari yaratishi mumkin. O'quvchilar ushbu guruhlarga a'zo bo'lib, o'zaro raqobat muhitida birgalikda o'rganadilar va loyihalarini mentorlar nazoratida topshiradilar.
-                  </p>
+                <div className="pt-2 flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400 font-bold text-sm">
+                  Guruhlar bilan tanishish <ChevronRight className="h-4 w-4" />
                 </div>
               </div>
-              <div className="pt-2 flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400 font-bold text-sm">
-                Guruhlar bilan tanishish <ChevronRight className="h-4 w-4" />
+
+              {/* Added high fidelity mock design layout visual representation */}
+              <div className="relative w-full md:w-72 bg-muted/30 border-t md:border-t-0 md:border-l border-border/75 min-h-[220px] overflow-hidden flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-blue-500/5" />
+                <img
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=500&q=80"
+                  alt="Mentorship Group Illustration"
+                  className="w-5/6 h-5/6 object-cover rounded-xl shadow-lg border border-border"
+                />
               </div>
             </div>
 
@@ -354,15 +372,52 @@ export default function LandingPage() {
                 <div key={n} className="rounded-2xl border border-border bg-card overflow-hidden animate-pulse h-72" />
               ))}
             </div>
-          ) : trendingPosts.length > 0 ? (
+          ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {trendingPosts.map((post) => (
+              {(trendingPosts.length > 0 ? trendingPosts : [
+                {
+                  id: "1",
+                  title: "LMS Ta'lim Platformasi",
+                  image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+                  url: "#",
+                  likes_count: 142,
+                  comments_count: 32,
+                  profiles: { firstname: "Diyorbek", lastname: "Rustamov", profile_image: null, username: "diyor" }
+                },
+                {
+                  id: "2",
+                  title: "AI Chat Assistant Portal",
+                  image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80",
+                  url: "#",
+                  likes_count: 118,
+                  comments_count: 19,
+                  profiles: { firstname: "Zuhra", lastname: "Karimova", profile_image: null, username: "zuhra" }
+                },
+                {
+                  id: "3",
+                  title: "Crypto Trading Dashboard",
+                  image: "https://images.unsplash.com/photo-1541462608143-67571c6738dd?auto=format&fit=crop&w=800&q=80",
+                  url: "#",
+                  likes_count: 95,
+                  comments_count: 14,
+                  profiles: { firstname: "Sardor", lastname: "Muxtorov", profile_image: null, username: "sardor" }
+                },
+                {
+                  id: "4",
+                  title: "Sayohat & Turizm Blogi",
+                  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+                  url: "#",
+                  likes_count: 84,
+                  comments_count: 11,
+                  profiles: { firstname: "Shaxzod", lastname: "Ismoilov", profile_image: null, username: "shaxzod" }
+                }
+              ]).map((post) => (
                 <div key={post.id} className="group rounded-2xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
                   <div>
                     {/* Thumbnail */}
                     <div className="relative aspect-[16/10] bg-muted overflow-hidden border-b border-border">
                       <img
-                        src={post.image}
+                        src={post.image || "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80"}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
                       />
@@ -415,10 +470,6 @@ export default function LandingPage() {
 
                 </div>
               ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 text-muted-foreground font-medium">
-              Hozircha ommabop loyihalar mavjud emas. Birinchi bo'lib joylang!
             </div>
           )}
 

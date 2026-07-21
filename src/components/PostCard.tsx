@@ -59,7 +59,7 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
 
   return (
     <div
-      className="group surface-card overflow-hidden hover-lift opacity-0 animate-fade-up"
+      className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 opacity-0 animate-fade-up"
       style={{ animationDelay: `${Math.min(index, 8) * 60}ms`, animationFillMode: "forwards" }}
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-muted m-2 rounded-2xl">

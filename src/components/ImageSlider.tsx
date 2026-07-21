@@ -40,10 +40,19 @@ function ImageSliderBase({
   }, [total, paused, autoPlayInterval]);
 
   if (total === 0) {
+    // Elegant high-quality Unsplash fallbacks for web design showcases
+    const fallbackImages = [
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1541462608143-67571c6738dd?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+    ];
+    // Consistently select a fallback based on alt text hash or length to keep it deterministic per post
+    const index = Math.abs(alt.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0)) % fallbackImages.length;
     return (
       <img
-        src="/placeholder.svg"
-        alt={alt}
+        src={fallbackImages[index]}
+        alt={alt || "RABOLA Project Showcase"}
         className={`h-full w-full object-cover ${className}`}
       />
     );

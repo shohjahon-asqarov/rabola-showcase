@@ -76,60 +76,105 @@ export default function Index() {
   });
 
   return (
-    <div className="pb-24 md:pb-8">
+    <div className="pb-24 md:pb-8 relative min-h-screen bg-background font-sans antialiased">
+      {/* Premium Ambient Background Blobs */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -z-10 w-full max-w-7xl h-[500px] pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[5%] w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] rounded-full bg-primary/8 blur-[80px] sm:blur-[110px]" />
+        <div className="absolute top-[15%] right-[5%] w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] rounded-full bg-cyan-500/8 blur-[70px] sm:blur-[100px]" />
+      </div>
+
       {/* HERO — asymmetric with mascot */}
-      <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-        {/* subtle grid */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(hsl(var(--primary))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--primary))_1px,transparent_1px)] [background-size:44px_44px]" />
+      <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[1.15fr_1fr] gap-12 lg:gap-16 items-center">
 
-        <div className="container relative pt-10 pb-10 sm:pt-14 sm:pb-14">
-          <div className="grid lg:grid-cols-[1.15fr_1fr] gap-8 lg:gap-12 items-center">
-            <div className="text-left space-y-5">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/80 backdrop-blur border border-primary/20 text-[12.5px] font-semibold text-primary opacity-0 animate-fade-up" style={{ animationFillMode: "forwards" }}>
-                <Sparkles className="h-3.5 w-3.5" /> RABOLA · Aqlli portfolio platformasi
+            {/* Left Hero Texts */}
+            <div className="text-left space-y-6 sm:space-y-8 opacity-0 animate-fade-up" style={{ animationFillMode: "forwards" }}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm font-semibold text-primary">
+                <Sparkles className="h-3.5 w-3.5 text-amber-500 animate-pulse" />
+                RABOLA · Aqlli portfolio platformasi
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-[3.4rem] font-extrabold tracking-tight leading-[1.02] opacity-0 animate-fade-up" style={{ animationDelay: "0.08s", animationFillMode: "forwards" }}>
-                Loyihalaringizni <br className="hidden sm:block" />
-                <span className="gradient-text">aqlli namoyish qiling.</span>
+
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.05] text-foreground">
+                Loyihalaringizni <br />
+                <span className="bg-gradient-to-r from-primary via-blue-500 to-cyan-400 bg-clip-text text-transparent">
+                  aqlli namoyish qiling!
+                </span>
               </h1>
-              <p className="max-w-xl text-[15px] text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: "0.16s", animationFillMode: "forwards" }}>
-                Web-saytlaringizni joylang, hamjamiyat baholasin, reytingda yuqoriga chiqing. RABOLA — o'quvchi va dasturchilar uchun zamonaviy showcase.
+
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl">
+                Web-saytlaringizni joylang, hamjamiyat baholasin, reytingda yuqoriga chiqing. RABOLA — o'quvchi va dasturchilar uchun zamonaviy showcase va interaktiv portfolio maydoni.
               </p>
-              <div className="flex flex-wrap items-center gap-2.5 opacity-0 animate-fade-up" style={{ animationDelay: "0.24s", animationFillMode: "forwards" }}>
-                <Link to="/add-post" className="inline-flex h-11 items-center gap-2 rounded-xl px-5 text-[14px] font-semibold text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.97] transition-all" style={{ background: "var(--gradient-primary)" }}>
-                  <Plus className="h-4 w-4" strokeWidth={2.6} /> Sayt joylash
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                <Link
+                  to="/add-post"
+                  className="group inline-flex h-12 items-center justify-center gap-2 rounded-2xl px-8 text-sm font-bold text-white shadow-lg hover:shadow-xl hover:shadow-primary/15 transition-all duration-300"
+                  style={{ background: "var(--gradient-primary)" }}
+                >
+                  <Plus className="h-5 w-5" strokeWidth={2.6} />
+                  Sayt joylash
                 </Link>
-                <Link to="/top" className="inline-flex h-11 items-center gap-2 rounded-xl px-5 text-[14px] font-semibold bg-card border border-primary/20 text-primary hover:bg-accent transition-all">
-                  <TrendingUp className="h-4 w-4" /> Top reyting <ArrowRight className="h-3.5 w-3.5" />
+                <Link
+                  to="/top"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-border bg-card/60 backdrop-blur-sm px-8 text-sm font-bold text-foreground hover:bg-accent hover:border-primary/40 transition-all duration-300"
+                >
+                  <TrendingUp className="h-4 w-4 text-primary" />
+                  Top reyting
                 </Link>
               </div>
             </div>
 
+            {/* Right Hero Visual Showcase */}
             <div className="relative hidden lg:block opacity-0 animate-fade-up" style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}>
-              <div className="absolute -inset-6 bg-gradient-to-tr from-primary/20 via-transparent to-[hsl(var(--primary-glow))]/25 blur-3xl rounded-[3rem]" />
-              <div className="relative rounded-[2rem] overflow-hidden border border-primary/15 bg-card shadow-[var(--shadow-lift)]">
-                <img src={heroAsset.url} alt="RABOLA robot mascot" className="w-full h-auto object-cover" loading="eager" />
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 to-cyan-500/15 blur-2xl opacity-60 pointer-events-none" />
+
+              {/* Browser window representation with high quality illustrative fallback image */}
+              <div className="relative rounded-2xl overflow-hidden border border-border bg-card shadow-2xl transition-all duration-500 hover:scale-[1.01]">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
+                  <div className="flex items-center gap-1.5">
+                    <span className="h-3 w-3 rounded-full bg-red-500/90" />
+                    <span className="h-3 w-3 rounded-full bg-yellow-500/90" />
+                    <span className="h-3 w-3 rounded-full bg-green-500/90" />
+                  </div>
+                  <div className="h-6 w-48 rounded-md bg-muted/60 border border-border/40 flex items-center justify-center text-[11px] text-muted-foreground font-medium">
+                    rabola.uz/feed
+                  </div>
+                  <div className="w-10" />
+                </div>
+                <div className="p-4 bg-muted/10">
+                  <img
+                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1000&q=80"
+                    alt="RABOLA feed preview"
+                    className="w-full h-auto rounded-xl object-cover shadow border border-border"
+                    loading="eager"
+                  />
+                </div>
               </div>
-              {/* Floating badges */}
-              <div className="absolute -left-3 top-6 px-3 py-2 rounded-xl bg-card border border-primary/15 shadow-[var(--shadow-card)] text-xs font-semibold flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[hsl(var(--primary-glow))] animate-pulse" /> AI-powered
+
+              {/* Floating interactive metrics */}
+              <div className="absolute -left-4 top-10 px-4 py-2.5 rounded-xl bg-card/90 backdrop-blur-sm border border-border/80 shadow-lg text-xs font-bold flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> AI-Moderated
               </div>
-              <div className="absolute -right-3 bottom-6 px-3 py-2 rounded-xl bg-card border border-primary/15 shadow-[var(--shadow-card)] text-xs font-semibold flex items-center gap-2">
-                <TrendingUp className="h-3.5 w-3.5 text-primary" /> Real-time reyting
+              <div className="absolute -right-4 bottom-10 px-4 py-2.5 rounded-xl bg-card/90 backdrop-blur-sm border border-border/80 shadow-lg text-xs font-bold flex items-center gap-2">
+                <TrendingUp className="h-3.5 w-3.5 text-primary" /> Real-time reytinglar
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* STATS */}
-      <div className="container mt-4">
-        <StatsBar />
-      </div>
+      {/* STATS BAR SECTION */}
+      <section className="py-10 border-y border-border bg-muted/25">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <StatsBar />
+        </div>
+      </section>
 
       {/* SEARCH + FILTERS */}
-      <div className="container mt-4 relative z-10">
-        <div className="surface-card p-3 sm:p-4 flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10">
+        <div className="bg-card border border-border rounded-2xl p-4 sm:p-5 flex flex-col lg:flex-row items-stretch lg:items-center gap-4 shadow-sm">
           <div className="relative flex-1 min-w-0">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
@@ -174,16 +219,16 @@ export default function Index() {
       </div>
 
       {/* GRID */}
-      <section className="container mt-6 space-y-6">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         {searchQuery && (
           <p className="text-sm text-muted-foreground">
             "<span className="text-foreground font-medium">{searchQuery}</span>" bo'yicha {sortedPosts.length} ta natija
           </p>
         )}
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="surface-card overflow-hidden">
+              <div key={i} className="bg-card border border-border rounded-2xl overflow-hidden animate-pulse">
                 <Skeleton className="aspect-[16/10] w-full" />
                 <div className="p-4 space-y-3">
                   <Skeleton className="h-5 w-3/4" />
@@ -194,17 +239,25 @@ export default function Index() {
             ))}
           </div>
         ) : sortedPosts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {sortedPosts.map((post, i) => (
               <PostCard key={post.id} post={post} index={i} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 text-muted-foreground">
-            <p className="text-lg">{posts.length === 0 ? "Hali loyihalar yo'q" : "Hech narsa topilmadi"}</p>
-            <p className="text-sm mt-1">
+          <div className="text-center py-24 bg-card border border-border rounded-2xl p-8 max-w-xl mx-auto">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="h-6 w-6 text-primary" />
+            </div>
+            <p className="text-lg font-bold text-foreground">{posts.length === 0 ? "Hali loyihalar yo'q" : "Hech narsa topilmadi"}</p>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
               {posts.length === 0 ? "Birinchi bo'lib loyiha joylang!" : "Boshqa kalit so'z bilan qidirib ko'ring"}
             </p>
+            {posts.length === 0 && (
+              <Link to="/add-post" className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-white mt-5 hover:bg-primary/90">
+                Loyiha joylash
+              </Link>
+            )}
           </div>
         )}
       </section>
