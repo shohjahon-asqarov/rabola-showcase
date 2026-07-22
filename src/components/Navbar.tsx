@@ -2,7 +2,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Sun, Moon, Plus, User, Home, LayoutGrid, Trophy, Users, GraduationCap, BarChart3, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import NotificationBell from "@/components/NotificationBell";
 import mascotAsset from "@/assets/rabola-mascot.png.asset.json";
 
@@ -12,6 +12,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = async () => {
     await logout();
@@ -30,6 +31,16 @@ export default function Navbar() {
   ];
 
   useEffect(() => { setMenuOpen(false); }, [location.pathname]);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-[0_1px_0_hsl(var(--border)/0.4),0_8px_24px_-16px_hsl(var(--foreground)/0.1)]">
@@ -91,35 +102,40 @@ export default function Navbar() {
           {isAuthenticated ? (
             <>
               <NotificationBell />
-              <button
-                onClick={() => setMenuOpen(v => !v)}
-                className="flex items-center gap-2 rounded-2xl border border-border bg-card pl-1 pr-3 py-1 hover:bg-muted transition-colors"
-              >
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full overflow-hidden bg-accent">
-                  {profile?.profile_image ? (
-                    <img src={profile.profile_image} alt="" className="h-full w-full object-cover" />
-                  ) : (
-                    <User className="h-4 w-4 text-muted-foreground" />
-                  )}
-                </span>
-                <span className="hidden md:flex flex-col items-start leading-tight">
-                  <span className="text-[13px] font-semibold">
-                    {profile?.firstname || "Profil"} {profile?.lastname?.[0]}.
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setMenuOpen(v => !v)}
+                  className="flex items-center gap-2 rounded-2xl border border-border bg-card pl-1 pr-3 py-1 hover:bg-muted transition-colors"
+                  aria-label="Profil menyusi"
+                  aria-haspopup="true"
+                  aria-expanded={menuOpen}
+                >
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full overflow-hidden bg-accent">
+                    {profile?.profile_image ? (
+                      <img src={profile.profile_image} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <User className="h-4 w-4 text-muted-foreground" />
+                    )}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">#{profile?.numeric_id || "----"}</span>
-                </span>
-                <ChevronDown className="hidden md:block h-3.5 w-3.5 text-muted-foreground" />
-              </button>
-              {menuOpen && (
-                <div className="absolute right-6 top-16 w-56 rounded-2xl border border-border bg-popover shadow-xl p-2 animate-fade-in">
-                  <Link to="/profile" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-muted">Profil</Link>
-                  <Link to="/profile/edit" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-muted">Sozlamalar</Link>
-                  {(role === "admin" || role === "moderator") && (
-                    <Link to="/admin" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-muted">Admin panel</Link>
-                  )}
-                  <button onClick={handleLogout} className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-destructive hover:bg-destructive/10">Chiqish</button>
-                </div>
-              )}
+                  <span className="hidden md:flex flex-col items-start leading-tight">
+                    <span className="text-[13px] font-semibold">
+                      {profile?.firstname || "Profil"} {profile?.lastname?.[0]}.
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">#{profile?.numeric_id || "----"}</span>
+                  </span>
+                  <ChevronDown className="hidden md:block h-3.5 w-3.5 text-muted-foreground" />
+                </button>
+                {menuOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-border bg-popover shadow-xl p-2 animate-fade-in z-50">
+                    <Link to="/profile" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-muted">Profil</Link>
+                    <Link to="/profile/edit" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-muted">Sozlamalar</Link>
+                    {(role === "admin" || role === "moderator") && (
+                      <Link to="/admin" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-muted">Admin panel</Link>
+                    )}
+                    <button onClick={handleLogout} className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-destructive hover:bg-destructive/10">Chiqish</button>
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <Link
