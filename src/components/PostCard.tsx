@@ -1,10 +1,17 @@
-import { Heart, MessageCircle, ExternalLink, Clock, CheckCircle, XCircle, TrendingUp, Bookmark, Eye, MoreVertical } from "lucide-react";
+import { Heart, MessageCircle, ExternalLink, Clock, CheckCircle, XCircle, TrendingUp, Bookmark, Eye, MoreVertical, Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { type Post } from "@/lib/mock-data";
 import ImageSlider from "@/components/ImageSlider";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "@/hooks/use-toast";
 
 interface PostCardProps {
   post: Post;
@@ -79,9 +86,49 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
             </span>
           )}
         </div>
-        <button className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground z-10">
-          <MoreVertical className="h-4 w-4" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              aria-label="Ko'proq amallar"
+              className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground hover:bg-white transition-all z-10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus:outline-none"
+            >
+              <MoreVertical className="h-4 w-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 bg-popover/95 backdrop-blur-sm border border-border/60 rounded-xl p-1 shadow-lg z-50">
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const postDetailUrl = `${window.location.origin}/post/${post.id}`;
+                navigator.clipboard.writeText(postDetailUrl);
+                toast({
+                  title: "Nusxalandi",
+                  description: "Loyiha havolasi buferga nusxalandi!",
+                });
+              }}
+              className="flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg cursor-pointer focus:bg-accent transition-colors"
+            >
+              <Share2 className="h-3.5 w-3.5" />
+              <span>Havolani nusxalash</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setSaved(v => !v);
+                toast({
+                  title: !saved ? "Saqlandi" : "O'chirildi",
+                  description: !saved ? "Loyiha saqlanganlarga qo'shildi" : "Loyiha saqlanganlardan o'chirildi",
+                });
+              }}
+              className="flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg cursor-pointer focus:bg-accent transition-colors"
+            >
+              <Bookmark className={`h-3.5 w-3.5 ${saved ? "fill-primary text-primary" : ""}`} />
+              <span>{saved ? "Saqlanganlardan o'chirish" : "Saqlab qo'yish"}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="px-4 pb-4 pt-2 space-y-3">
