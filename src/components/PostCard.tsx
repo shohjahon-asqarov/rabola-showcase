@@ -1,10 +1,11 @@
-import { Heart, MessageCircle, ExternalLink, Clock, CheckCircle, XCircle, TrendingUp, Bookmark, Eye, MoreVertical } from "lucide-react";
+import { Heart, MessageCircle, ExternalLink, Clock, CheckCircle, XCircle, TrendingUp, Bookmark, Eye, Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { type Post } from "@/lib/mock-data";
 import ImageSlider from "@/components/ImageSlider";
+import { toast } from "@/hooks/use-toast";
 
 interface PostCardProps {
   post: Post;
@@ -45,7 +46,10 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
   }, [user, post.id]);
 
   const handleLike = async () => {
-    if (!user) return;
+    if (!user) {
+      toast({ title: "Kirish shart", description: "Loyiha bilan o'zaro aloqa qilish uchun tizimga kiring", variant: "destructive" });
+      return;
+    }
     if (liked) {
       await supabase.from("likes").delete().eq("user_id", user.id).eq("post_id", post.id);
       setLiked(false);
@@ -55,6 +59,40 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
       setLiked(true);
       setLikesCount(prev => prev + 1);
     }
+  };
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const shareUrl = `${window.location.origin}/post/${post.id}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: post.title,
+          text: post.description || undefined,
+          url: shareUrl,
+        });
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        toast({ title: "Havola nusxalandi", description: "Loyiha havolasi clipboardga nusxalandi!" });
+      }
+    } catch {
+      // Ignore user-cancelling
+    }
+  };
+
+  const handleSave = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      toast({ title: "Kirish shart", description: "Loyihani saqlash uchun tizimga kiring", variant: "destructive" });
+      return;
+    }
+    setSaved(v => !v);
+    toast({
+      title: !saved ? "Saqlandi" : "Saqlanganlardan olib tashlandi",
+      description: !saved ? "Loyiha profilingizga saqlandi." : "Loyiha saqlanganlardan o'chirildi."
+    });
   };
 
   return (
@@ -79,8 +117,13 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
             </span>
           )}
         </div>
-        <button className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground z-10">
-          <MoreVertical className="h-4 w-4" />
+        <button
+          onClick={handleShare}
+          aria-label="Loyihani ulashish"
+          title="Ulashish"
+          className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-primary hover:bg-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-all duration-200 z-10 shadow-sm"
+        >
+          <Share2 className="h-4 w-4" />
         </button>
       </div>
 
@@ -109,24 +152,45 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
         )}
 
         <div className="flex items-center gap-3 pt-2 border-t border-border/70">
-          <button onClick={handleLike} className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-destructive transition-colors active:scale-95">
+          <button
+            onClick={handleLike}
+            aria-label={`${likesCount} ta layk. Yoqtirish uchun bosing.`}
+            title="Loyiha yoqdi"
+            className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-destructive focus-visible:text-destructive focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-destructive rounded px-1 transition-colors active:scale-95"
+          >
             <Heart className={`h-3.5 w-3.5 transition-all ${liked ? "fill-destructive text-destructive scale-110" : ""}`} />
             {likesCount}
           </button>
-          <Link to={`/post/${post.id}`} className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-primary transition-colors">
+          <Link
+            to={`/post/${post.id}`}
+            aria-label={`${post.comments_count} ta izoh. Izohlarni ko'rish.`}
+            title="Izoh qoldirish"
+            className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-primary focus-visible:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded px-1 transition-colors"
+          >
             <MessageCircle className="h-3.5 w-3.5" />
             {post.comments_count}
           </Link>
-          <span className="flex items-center gap-1 text-[12.5px] text-muted-foreground">
+          <span
+            aria-label={`Taxminan ${(post.likes_count || 0) * 3 + (post.comments_count || 0) * 5} ta ko'rishlar soni.`}
+            title="Ko'rishlar soni"
+            className="flex items-center gap-1 text-[12.5px] text-muted-foreground select-none"
+          >
             <Eye className="h-3.5 w-3.5" />
             {(post.likes_count || 0) * 3 + (post.comments_count || 0) * 5}
           </span>
-          <button onClick={() => setSaved(v => !v)} className="ml-auto text-muted-foreground hover:text-primary transition-colors">
+          <button
+            onClick={handleSave}
+            aria-label={saved ? "Saqlanganlardan olib tashlash" : "Loyihani saqlash"}
+            title={saved ? "Saqlangan" : "Saqlash"}
+            className="ml-auto text-muted-foreground hover:text-primary focus-visible:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded p-0.5 transition-colors"
+          >
             <Bookmark className={`h-3.5 w-3.5 ${saved ? "fill-primary text-primary" : ""}`} />
           </button>
           <Link
             to={`/post/${post.id}`}
-            className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:underline"
+            aria-label="Loyihani to'liq ko'rish"
+            title="Ko'rish"
+            className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded px-1"
           >
             <ExternalLink className="h-3 w-3" /> Ko'rish
           </Link>
