@@ -18,8 +18,18 @@ export default function Footer() {
               Dasturchilar uchun aqlli platforma — o'z loyihalaringizni namoyish qiling, ilhomlaning va rivojlaning.
             </p>
             <div className="mt-4 flex items-center gap-2">
-              {[Github, Twitter, Send, Instagram].map((Icon, i) => (
-                <a key={i} href="#" className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors">
+              {[
+                { Icon: Github, label: "GitHub sahifamiz" },
+                { Icon: Twitter, label: "Twitter sahifamiz" },
+                { Icon: Send, label: "Telegram kanalimiz" },
+                { Icon: Instagram, label: "Instagram sahifamiz" },
+              ].map(({ Icon, label }, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  aria-label={label}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+                >
                   <Icon className="h-4 w-4" />
                 </a>
               ))}
