@@ -1,10 +1,17 @@
-import { Heart, MessageCircle, ExternalLink, Clock, CheckCircle, XCircle, TrendingUp, Bookmark, Eye, MoreVertical } from "lucide-react";
+import { Heart, MessageCircle, ExternalLink, Clock, CheckCircle, XCircle, TrendingUp, Bookmark, Eye, MoreVertical, Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { type Post } from "@/lib/mock-data";
 import ImageSlider from "@/components/ImageSlider";
+import { toast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface PostCardProps {
   post: Post;
@@ -12,7 +19,7 @@ interface PostCardProps {
   showStatus?: boolean;
 }
 
-const statusConfig: Record<string, { icon: any; label: string; color: string }> = {
+const statusConfig: Record<string, { icon: React.ComponentType<{ className?: string }>; label: string; color: string }> = {
   pending: { icon: Clock, label: "Kutilmoqda", color: "bg-warning/10 text-warning" },
   approved: { icon: CheckCircle, label: "Tasdiqlandi", color: "bg-primary/10 text-primary" },
   rejected: { icon: XCircle, label: "Rad etildi", color: "bg-destructive/10 text-destructive" },
@@ -26,10 +33,24 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
   const profile = post.profiles;
 
   const images = post.image ? post.image.split(",").filter(Boolean) : [];
-  const status = (post as any).status || "approved";
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/post/${post.id}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: post.title, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast({ title: "Havola nusxa olindi" });
+      }
+    } catch {
+      toast({ title: "Xatolik", description: "Ulashishda xatolik yuz berdi", variant: "destructive" });
+    }
+  };
+  const status = post.status || "approved";
   const statusInfo = statusConfig[status] || statusConfig.pending;
   const StatusIcon = statusInfo.icon;
-  const isTrending = (post as any).is_trending;
+  const isTrending = post.is_trending;
 
   useEffect(() => {
     if (!user) return;
@@ -79,9 +100,47 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
             </span>
           )}
         </div>
-        <button className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground z-10">
-          <MoreVertical className="h-4 w-4" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              aria-label="Ko'proq imkoniyatlar"
+              className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground z-10 transition-colors hover:bg-white active:scale-95"
+            >
+              <MoreVertical className="h-4 w-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-44 z-50">
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShare();
+              }}
+              className="gap-2 text-[13px] font-medium cursor-pointer"
+            >
+              <Share2 className="h-3.5 w-3.5" /> Ulashish
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setSaved(v => !v);
+              }}
+              className="gap-2 text-[13px] font-medium cursor-pointer"
+            >
+              <Bookmark className={`h-3.5 w-3.5 ${saved ? "fill-primary text-primary" : ""}`} /> {saved ? "Saqlangan" : "Saqlash"}
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <a
+                href={post.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-2 cursor-pointer text-[13px] font-medium"
+              >
+                <ExternalLink className="h-3.5 w-3.5" /> Saytga o'tish
+              </a>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="px-4 pb-4 pt-2 space-y-3">
@@ -109,7 +168,11 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
         )}
 
         <div className="flex items-center gap-3 pt-2 border-t border-border/70">
-          <button onClick={handleLike} className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-destructive transition-colors active:scale-95">
+          <button
+            onClick={handleLike}
+            aria-label={liked ? "Yoqtirishdan olib tashlash" : "Yoqtirish"}
+            className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-destructive transition-colors active:scale-95"
+          >
             <Heart className={`h-3.5 w-3.5 transition-all ${liked ? "fill-destructive text-destructive scale-110" : ""}`} />
             {likesCount}
           </button>
@@ -121,7 +184,11 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
             <Eye className="h-3.5 w-3.5" />
             {(post.likes_count || 0) * 3 + (post.comments_count || 0) * 5}
           </span>
-          <button onClick={() => setSaved(v => !v)} className="ml-auto text-muted-foreground hover:text-primary transition-colors">
+          <button
+            onClick={() => setSaved(v => !v)}
+            aria-label={saved ? "Saqlanganlardan olib tashlash" : "Saqlash"}
+            className="ml-auto text-muted-foreground hover:text-primary transition-colors active:scale-95"
+          >
             <Bookmark className={`h-3.5 w-3.5 ${saved ? "fill-primary text-primary" : ""}`} />
           </button>
           <Link
