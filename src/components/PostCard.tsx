@@ -79,7 +79,10 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
             </span>
           )}
         </div>
-        <button className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground z-10">
+        <button
+          className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-all z-10"
+          aria-label="Qo'shimcha sozlamalar"
+        >
           <MoreVertical className="h-4 w-4" />
         </button>
       </div>
@@ -109,24 +112,37 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
         )}
 
         <div className="flex items-center gap-3 pt-2 border-t border-border/70">
-          <button onClick={handleLike} className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-destructive transition-colors active:scale-95">
+          <button
+            onClick={handleLike}
+            className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-destructive focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-1 transition-all active:scale-95"
+            aria-label={`${post.title} loyihasiga layk bosish. Hozirgi layklar soni: ${likesCount}`}
+          >
             <Heart className={`h-3.5 w-3.5 transition-all ${liked ? "fill-destructive text-destructive scale-110" : ""}`} />
             {likesCount}
           </button>
-          <Link to={`/post/${post.id}`} className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-primary transition-colors">
+          <Link
+            to={`/post/${post.id}`}
+            className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-1 transition-all"
+            aria-label={`${post.title} loyihasining izohlarini ko'rish. Izohlar soni: ${post.comments_count}`}
+          >
             <MessageCircle className="h-3.5 w-3.5" />
             {post.comments_count}
           </Link>
-          <span className="flex items-center gap-1 text-[12.5px] text-muted-foreground">
+          <span className="flex items-center gap-1 text-[12.5px] text-muted-foreground" aria-label={`Ko'rishlar soni taxminan: ${(post.likes_count || 0) * 3 + (post.comments_count || 0) * 5}`}>
             <Eye className="h-3.5 w-3.5" />
             {(post.likes_count || 0) * 3 + (post.comments_count || 0) * 5}
           </span>
-          <button onClick={() => setSaved(v => !v)} className="ml-auto text-muted-foreground hover:text-primary transition-colors">
+          <button
+            onClick={() => setSaved(v => !v)}
+            className="ml-auto text-muted-foreground hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-lg p-1 transition-all"
+            aria-label={`${post.title} loyihasini saqlanganlar ro'yxatiga qo'shish`}
+          >
             <Bookmark className={`h-3.5 w-3.5 ${saved ? "fill-primary text-primary" : ""}`} />
           </button>
           <Link
             to={`/post/${post.id}`}
-            className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:underline"
+            className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:underline focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded px-1 transition-all"
+            aria-label={`${post.title} loyihasini to'liq ko'rish`}
           >
             <ExternalLink className="h-3 w-3" /> Ko'rish
           </Link>
