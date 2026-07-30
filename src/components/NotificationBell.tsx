@@ -71,8 +71,8 @@ export default function NotificationBell() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-all relative"
-        aria-label="Bildirishnomalar"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-all relative focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-offset-2"
+        aria-label={unreadCount > 0 ? `Bildirishnomalar, ${unreadCount} ta yangi` : "Bildirishnomalar"}
         aria-haspopup="true"
         aria-expanded={open}
       >
