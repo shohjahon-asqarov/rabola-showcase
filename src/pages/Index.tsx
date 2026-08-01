@@ -1,10 +1,10 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import PostCard from "@/components/PostCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrendingUp, Search, Plus, Globe, LayoutGrid, FileText, Newspaper, MousePointerClick, Sparkles, ChevronDown, ArrowRight } from "lucide-react";
+import { TrendingUp, Search, Plus, Globe, LayoutGrid, FileText, Newspaper, MousePointerClick, Sparkles, ChevronDown, ArrowRight, X } from "lucide-react";
 import StatsBar from "@/components/StatsBar";
 import type { Post, Profile } from "@/lib/mock-data";
 import heroAsset from "@/assets/rabola-hero.png.asset.json";
@@ -25,6 +25,36 @@ export default function Index() {
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState<"new" | "popular" | "likes">("new");
   const searchQuery = localSearch.trim().toLowerCase();
+
+  const handleClearSearch = () => {
+    setLocalSearch("");
+    if (searchParams.has("search")) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete("search");
+      setSearchParams(newParams);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      if (
+        activeEl &&
+        (activeEl.tagName === "INPUT" ||
+          activeEl.tagName === "TEXTAREA" ||
+          activeEl.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.key === "/") {
+        e.preventDefault();
+        document.getElementById("search-input")?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ["posts"],
@@ -132,12 +162,30 @@ export default function Index() {
         <div className="surface-card p-3 sm:p-4 flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
           <div className="relative flex-1 min-w-0">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <label htmlFor="search-input" className="sr-only">
+              Sayt nomi yoki kalit so'z bilan qidirish...
+            </label>
             <input
+              id="search-input"
               value={localSearch}
               onChange={e => setLocalSearch(e.target.value)}
               placeholder="Sayt nomi yoki kalit so'z bilan qidirish..."
-              className="w-full h-11 rounded-xl border border-border bg-background pl-11 pr-4 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all"
+              className="w-full h-11 rounded-xl border border-border bg-background pl-11 pr-10 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-offset-2"
             />
+            {localSearch ? (
+              <button
+                onClick={handleClearSearch}
+                className="absolute right-3 top-1/2 -translate-y-1/2 h-7 w-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-offset-2 transition-all"
+                aria-label="Qidiruvni tozalash"
+                type="button"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            ) : (
+              <kbd className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                /
+              </kbd>
+            )}
           </div>
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
             {categories.map(c => {
