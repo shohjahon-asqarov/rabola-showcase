@@ -72,7 +72,11 @@ function ImageSliderBase({
   };
   const onTouchEnd = () => {
     if (Math.abs(touchDeltaX.current) > 40) {
-      touchDeltaX.current < 0 ? next() : prev();
+      if (touchDeltaX.current < 0) {
+        next();
+      } else {
+        prev();
+      }
     }
     touchStartX.current = null;
     touchDeltaX.current = 0;
@@ -108,7 +112,7 @@ function ImageSliderBase({
         type="button"
         aria-label="Oldingi rasm"
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); prev(); }}
-        className="absolute left-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background/85 backdrop-blur-sm border border-border/50 flex items-center justify-center opacity-0 group-hover/slider:opacity-100 transition-all hover:bg-background hover:scale-110 shadow-md z-10"
+        className="absolute left-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background/85 backdrop-blur-sm border border-border/50 flex items-center justify-center opacity-0 group-hover/slider:opacity-100 transition-all hover:bg-background hover:scale-110 shadow-md z-10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-offset-2"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -116,7 +120,7 @@ function ImageSliderBase({
         type="button"
         aria-label="Keyingi rasm"
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); next(); }}
-        className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background/85 backdrop-blur-sm border border-border/50 flex items-center justify-center opacity-0 group-hover/slider:opacity-100 transition-all hover:bg-background hover:scale-110 shadow-md z-10"
+        className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background/85 backdrop-blur-sm border border-border/50 flex items-center justify-center opacity-0 group-hover/slider:opacity-100 transition-all hover:bg-background hover:scale-110 shadow-md z-10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-offset-2"
       >
         <ChevronRight className="h-4 w-4" />
       </button>
