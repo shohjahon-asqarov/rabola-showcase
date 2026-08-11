@@ -38,8 +38,17 @@ export default function Navbar() {
         setMenuOpen(false);
       }
     };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   return (
@@ -105,7 +114,7 @@ export default function Navbar() {
               <div className="relative" ref={profileRef}>
                 <button
                   onClick={() => setMenuOpen(v => !v)}
-                  className="flex items-center gap-2 rounded-2xl border border-border bg-card pl-1 pr-3 py-1 hover:bg-muted transition-colors"
+                  className="flex items-center gap-2 rounded-2xl border border-border bg-card pl-1 pr-3 py-1 hover:bg-muted transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-offset-2"
                   aria-label="Profil menyusi"
                   aria-haspopup="true"
                   aria-expanded={menuOpen}
