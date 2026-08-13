@@ -42,6 +42,18 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+    if (menuOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
+
   return (
     <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-[0_1px_0_hsl(var(--border)/0.4),0_8px_24px_-16px_hsl(var(--foreground)/0.1)]">
       <div className="container flex h-16 items-center gap-3">
@@ -93,8 +105,8 @@ export default function Navbar() {
           )}
           <button
             onClick={toggleTheme}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            aria-label="Toggle theme"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-offset-2 transition-colors"
+            aria-label="Mavzuni o'zgartirish"
           >
             {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </button>
@@ -105,7 +117,7 @@ export default function Navbar() {
               <div className="relative" ref={profileRef}>
                 <button
                   onClick={() => setMenuOpen(v => !v)}
-                  className="flex items-center gap-2 rounded-2xl border border-border bg-card pl-1 pr-3 py-1 hover:bg-muted transition-colors"
+                  className="flex items-center gap-2 rounded-2xl border border-border bg-card pl-1 pr-3 py-1 hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-offset-2 transition-colors"
                   aria-label="Profil menyusi"
                   aria-haspopup="true"
                   aria-expanded={menuOpen}
