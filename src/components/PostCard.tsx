@@ -79,7 +79,11 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
             </span>
           )}
         </div>
-        <button className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground z-10">
+        <button
+          type="button"
+          aria-label="Boshqa amallar"
+          className="absolute top-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        >
           <MoreVertical className="h-4 w-4" />
         </button>
       </div>
@@ -109,11 +113,20 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
         )}
 
         <div className="flex items-center gap-3 pt-2 border-t border-border/70">
-          <button onClick={handleLike} className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-destructive transition-colors active:scale-95">
+          <button
+            type="button"
+            onClick={handleLike}
+            aria-label={liked ? "Yoqtirishni bekor qilish" : "Yoqtirish"}
+            aria-pressed={liked}
+            className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-destructive transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-1 py-0.5"
+          >
             <Heart className={`h-3.5 w-3.5 transition-all ${liked ? "fill-destructive text-destructive scale-110" : ""}`} />
             {likesCount}
           </button>
-          <Link to={`/post/${post.id}`} className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-primary transition-colors">
+          <Link
+            to={`/post/${post.id}`}
+            className="flex items-center gap-1 text-[12.5px] text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-1 py-0.5"
+          >
             <MessageCircle className="h-3.5 w-3.5" />
             {post.comments_count}
           </Link>
@@ -121,12 +134,18 @@ export default function PostCard({ post, index = 0, showStatus = false }: PostCa
             <Eye className="h-3.5 w-3.5" />
             {(post.likes_count || 0) * 3 + (post.comments_count || 0) * 5}
           </span>
-          <button onClick={() => setSaved(v => !v)} className="ml-auto text-muted-foreground hover:text-primary transition-colors">
+          <button
+            type="button"
+            onClick={() => setSaved(v => !v)}
+            aria-label={saved ? "Saqlanganlardan olib tashlash" : "Saqlash"}
+            aria-pressed={saved}
+            className="ml-auto text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md p-1"
+          >
             <Bookmark className={`h-3.5 w-3.5 ${saved ? "fill-primary text-primary" : ""}`} />
           </button>
           <Link
             to={`/post/${post.id}`}
-            className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:underline"
+            className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-1"
           >
             <ExternalLink className="h-3 w-3" /> Ko'rish
           </Link>
